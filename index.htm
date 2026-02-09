@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Восточная хоккейная лига (ВХЛ)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary-black: #000000;
+            --secondary-black: #121212;
+            --accent-black: #1a1a1a;
+            --primary-white: #ffffff;
+            --accent-white: #f0f0f0;
+            --accent-red: #e10600;
+            --accent-blue: #0066cc;
+        }
+        
+        body {
+            background-color: var(--primary-black);
+            color: var(--primary-white);
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: background-color 0.5s;
+        }
+        
+        /* Анимация перерыва на белый */
+        @keyframes whiteBreak {
+            0% { background-color: var(--primary-black); }
+            50% { background-color: var(--primary-white); }
+            100% { background-color: var(--primary-black); }
+        }
+        
+        .white-break {
+            animation: whiteBreak 2s ease-in-out;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Шапка */
+        header {
+            background-color: var(--secondary-black);
+            padding: 25px 0;
+            border-bottom: 3px solid var(--accent-red);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            color: var(--accent-red);
+        }
+        
+        .logo-text h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .logo-text h2 {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: #aaa;
+            letter-spacing: 3px;
+            margin-top: 5px;
+        }
+        
+        /* Кнопка перерыва */
+        .break-btn {
+            background-color: var(--accent-red);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .break-btn:hover {
+            background-color: #ff1a1a;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(225, 6, 0, 0.3);
+        }
+        
+        /* Основной контент */
+        main {
+            padding: 40px 0;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Секции */
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent-red);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: var(--accent-red);
+        }
+        
+        /* Команды */
+        .teams-container {
+            background-color: var(--secondary-black);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .teams-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .team-card {
+            background-color: var(--accent-black);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: transform 0.3s;
+            border-left: 4px solid var(--accent-red);
+        }
+        
+        .team-card:hover {
+            transform: translateX(5px);
+        }
+        
+        .team-logo {
+            width: 60px;
+            height: 60px;
+            background-color: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .amuris-logo {
+            background-color: #0d3b66;
+            color: #f4d35e;
+        }
+        
+        .taifun-logo {
+            background-color: #1a1a1a;
+            color: #e10600;
+        }
+        
+        .team-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .team-info p {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Расписание матчей */
+        .matches-container {
+            background-color: var(--secondary-black);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .matches-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .match-card {
+            background-color: var(--accent-black);
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.3s;
+            border-left: 4px solid var(--accent-blue);
+        }
+        
+        .match-card:hover {
+            transform: translateX(5px);
+        }
+        
+        .match-date {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .match-teams {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .team-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        
+        .amuris-name {
+            color: #f4d35e;
+        }
+        
+        .taifun-name {
+            color: #e10600;
+        }
+        
+        .score {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0 15px;
+        }
+        
+        .match-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .status-not-started {
+            background-color: #333;
+            color: #ffcc00;
+        }
+        
+        .status-in-progress {
+            background-color: #003300;
+            color: #00cc00;
+        }
+        
+        .status-finished {
+            background-color: #1a1a1a;
+            color: #ccc;
+        }
+        
+        /* Футер */
+        footer {
+            background-color: var(--secondary-black);
+            padding: 30px 0;
+            border-top: 1px solid #333;
+            margin-top: 30px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .footer-logo {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .copyright {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            color: #aaa;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--accent-red);
+        }
+        
+        /* Декоративные элементы */
+        .hockey-puck {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: #333;
+            border-radius: 50%;
+            top: 20px;
+            right: 15%;
+            opacity: 0.5;
+        }
+        
+        .hockey-stick {
+            position: absolute;
+            width: 80px;
+            height: 10px;
+            background-color: #444;
+            bottom: 10px;
+            right: 10%;
+            transform: rotate(45deg);
+            opacity: 0.5;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .logo {
+                justify-content: center;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hockey-puck, .hockey-stick {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-hockey-puck"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>ВОСТОЧНАЯ ХОККЕЙНАЯ ЛИГА</h1>
+                        <h2>ВХЛ</h2>
+                    </div>
+                </div>
+                <button class="break-btn" id="whiteBreakBtn">
+                    <i class="fas fa-bolt"></i> ПЕРЕРЫВ НА БЕЛЫЙ
+                </button>
+            </div>
+        </div>
+        <div class="hockey-puck"></div>
+        <div class="hockey-stick"></div>
+    </header>
+    
+    <main class="container">
+        <div class="content-grid">
+            <section class="teams-section">
+                <h2 class="section-title">
+                    <i class="fas fa-users"></i> КОМАНДЫ ЛИГИ
+                </h2>
+                <div class="teams-container">
+                    <div class="teams-list">
+                        <div class="team-card">
+                            <div class="team-logo amuris-logo">А</div>
+                            <div class="team-info">
+                                <h3>АМУРИС</h3>
+                                <p>BHL</p>
+                            </div>
+                        </div>
+                        
+                        <div class="team-card">
+                            <div class="team-logo taifun-logo">Т</div>
+                            <div class="team-info">
+                                <h3>ТАЙФУН</h3>
+                                <p>BHL</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="matches-section">
+                <h2 class="section-title">
+                    <i class="fas fa-calendar-alt"></i> РАСПИСАНИЕ МАТЧЕЙ
+                </h2>
+                <div class="matches-container">
+                    <div class="matches-list" id="matchesList">
+                        <!-- Матчи будут добавлены через JavaScript -->
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">ВХЛ • ВОСТОЧНАЯ ХОККЕЙНАЯ ЛИГА</div>
+                <div class="copyright">© 2026 Восточная хоккейная лига. Все права защищены.</div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-vk"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Данные матчей
+        const matches = [
+            {
+                date: "DATE",
+                time: "TIME",
+                timezone: "ПО ХБР",
+                team1: "АМУРИС",
+                team2: "ТАЙФУН",
+                score1: 0,
+                score2: 0,
+                status: "not-started",
+                statusText: "ЕЩЕ НЕ НАЧАЛСЯ"
+            },
+            {
+                date: "-",
+                time: "-",
+                timezone: "ПО ХБР",
+                team1: "ТАЙФУН",
+                team2: "АМУРИС",
+                score1: 0,
+                score2: 0,
+                status: "not-started",
+                statusText: "ЕЩЕ НЕ НАЧАЛСЯ"
+            },
+            {
+                date: "-",
+                time: "-",
+                timezone: "ПО ХБР",
+                team1: "АМУРИС",
+                team2: "ТАЙФУН",
+                score1: 0,
+                score2: 0,
+                status: "not-started",
+                statusText: "ЕЩЕ НЕ НАЧАЛСЯ"
+            },
+            {
+                date: "-",
+                time: "-",
+                timezone: "ПО ХБР",
+                team1: "ТАЙФУН",
+                team2: "АМУРИС",
+                score1: 0,
+                score2: 0,
+                status: "not-started",
+                statusText: "ЕЩЕ НЕ НАЧАЛСЯ"
+            },
+            {
+                date: "-",
+                time: "-",
+                timezone: "ПО ХБР",
+                team1: "АМУРИС",
+                team2: "ТАЙФУН",
+                score1: 0,
+                score2: 0,
+                status: "not-started",
+                statusText: "ЕЩЕ НЕ НАЧАЛСЯ"
+            }
+        ];
+        
+        // Функция для отображения матчей
+        function renderMatches() {
+            const matchesList = document.getElementById('matchesList');
+            matchesList.innerHTML = '';
+            
+            matches.forEach(match => {
+                const matchCard = document.createElement('div');
+                matchCard.className = 'match-card';
+                
+                // Определение классов для команд
+                const team1Class = match.team1 === 'АМУРИС' ? 'amuris-name' : 'taifun-name';
+                const team2Class = match.team2 === 'АМУРИС' ? 'amuris-name' : 'taifun-name';
+                
+                matchCard.innerHTML = `
+                    <div class="match-date">
+                        <i class="far fa-calendar"></i> ${match.date} В ${match.time} ${match.timezone}
+                    </div>
+                    <div class="match-teams">
+                        <div class="team-name ${team1Class}">${match.team1}</div>
+                        <div class="score">${match.score1} : ${match.score2}</div>
+                        <div class="team-name ${team2Class}">${match.team2}</div>
+                    </div>
+                    <div class="match-status status-${match.status}">
+                        <i class="far fa-clock"></i> ${match.statusText}
+                    </div>
+                `;
+                
+                matchesList.appendChild(matchCard);
+            });
+        }
+        
+        // Функция для эффекта "перерыв на белый"
+        function activateWhiteBreak() {
+            document.body.classList.add('white-break');
+            
+            // Удаляем класс после завершения анимации
+            setTimeout(() => {
+                document.body.classList.remove('white-break');
+            }, 2000);
+        }
+        
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Рендерим матчи
+            renderMatches();
+            
+            // Назначаем обработчик для кнопки "перерыв на белый"
+            document.getElementById('whiteBreakBtn').addEventListener('click', activateWhiteBreak);
+            
+            // Пример изменения статуса матча через 10 секунд (для демонстрации)
+            setTimeout(() => {
+                // Изменяем статус первого матча на "В ПРОГРЕССЕ"
+                matches[0].status = "in-progress";
+                matches[0].statusText = "В ПРОГРЕССЕ";
+                matches[0].score1 = 1;
+                matches[0].score2 = 0;
+                
+                renderMatches();
+            }, 10000);
+            
+            // Изменяем статус второго матча через 20 секунд
+            setTimeout(() => {
+                matches[1].status = "finished";
+                matches[1].statusText = "ЗАВЕРШЕН";
+                matches[1].score1 = 3;
+                matches[1].score2 = 2;
+                
+                renderMatches();
+            }, 20000);
+        });
+    </script>
+</body>
+</html>
