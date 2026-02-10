@@ -291,6 +291,118 @@
             color: #ccc;
         }
         
+        /* Панель управления матчами */
+        .matches-control {
+            background-color: var(--secondary-black);
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .control-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--accent-red);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .matches-control-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .match-control {
+            background-color: var(--accent-black);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        
+        .match-control-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .match-control-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .match-number {
+            color: var(--accent-red);
+            font-weight: 700;
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        .control-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .score-inputs {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .score-input {
+            width: 60px;
+            padding: 8px;
+            background-color: #333;
+            border: 1px solid #555;
+            border-radius: 4px;
+            color: white;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .score-separator {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #aaa;
+        }
+        
+        .status-select {
+            width: 100%;
+            padding: 10px;
+            background-color: #333;
+            border: 1px solid #555;
+            border-radius: 4px;
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .update-btn {
+            background-color: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .update-btn:hover {
+            background-color: #0080ff;
+            transform: translateY(-2px);
+        }
+        
         /* Футер */
         footer {
             background-color: var(--secondary-black);
@@ -375,6 +487,10 @@
             .hockey-puck, .hockey-stick {
                 display: none;
             }
+            
+            .matches-control-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -412,7 +528,7 @@
                             <div class="team-logo amuris-logo">А</div>
                             <div class="team-info">
                                 <h3>АМУРИС</h3>
-                                <p>BHL</p>
+                                <p>Основан в 2010 году. Базируется в Хабаровске.</p>
                             </div>
                         </div>
                         
@@ -420,7 +536,7 @@
                             <div class="team-logo taifun-logo">Т</div>
                             <div class="team-info">
                                 <h3>ТАЙФУН</h3>
-                                <p>BHL</p>
+                                <p>Основан в 2012 году. Базируется во Владивостоке.</p>
                             </div>
                         </div>
                     </div>
@@ -438,6 +554,18 @@
                 </div>
             </section>
         </div>
+        
+        <!-- Панель управления матчами -->
+        <section class="matches-control">
+            <h2 class="control-title">
+                <i class="fas fa-sliders-h"></i> УПРАВЛЕНИЕ МАТЧАМИ
+            </h2>
+            <p style="margin-bottom: 20px; color: #aaa;">Используйте эту панель для изменения статусов и счетов матчей</p>
+            
+            <div class="matches-control-grid" id="matchesControl">
+                <!-- Панели управления будут добавлены через JavaScript -->
+            </div>
+        </section>
     </main>
     
     <footer>
@@ -470,8 +598,8 @@
                 statusText: "ЕЩЕ НЕ НАЧАЛСЯ"
             },
             {
-                date: "-",
-                time: "-",
+                date: "21.02.2026",
+                time: "14:00",
                 timezone: "ПО ХБР",
                 team1: "ТАЙФУН",
                 team2: "АМУРИС",
@@ -481,8 +609,8 @@
                 statusText: "ЕЩЕ НЕ НАЧАЛСЯ"
             },
             {
-                date: "-",
-                time: "-",
+                date: "22.02.2026",
+                time: "14:00",
                 timezone: "ПО ХБР",
                 team1: "АМУРИС",
                 team2: "ТАЙФУН",
@@ -493,7 +621,7 @@
             },
             {
                 date: "-",
-                time: "-",
+                time: "14:00",
                 timezone: "ПО ХБР",
                 team1: "ТАЙФУН",
                 team2: "АМУРИС",
@@ -520,7 +648,7 @@
             const matchesList = document.getElementById('matchesList');
             matchesList.innerHTML = '';
             
-            matches.forEach(match => {
+            matches.forEach((match, index) => {
                 const matchCard = document.createElement('div');
                 matchCard.className = 'match-card';
                 
@@ -546,6 +674,149 @@
             });
         }
         
+        // Функция для создания панелей управления
+        function renderControls() {
+            const matchesControl = document.getElementById('matchesControl');
+            matchesControl.innerHTML = '';
+            
+            matches.forEach((match, index) => {
+                const matchControl = document.createElement('div');
+                matchControl.className = 'match-control';
+                
+                matchControl.innerHTML = `
+                    <div class="match-control-header">
+                        <div class="match-control-title">Матч ${index + 1}</div>
+                        <div class="match-number">#${index + 1}</div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">Дата и время:</div>
+                        <div>${match.date} ${match.time} ${match.timezone}</div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">Команды:</div>
+                        <div>${match.team1} vs ${match.team2}</div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">Счёт:</div>
+                        <div class="score-inputs">
+                            <input type="number" min="0" max="99" value="${match.score1}" 
+                                   class="score-input" id="score1_${index}">
+                            <div class="score-separator">:</div>
+                            <input type="number" min="0" max="99" value="${match.score2}" 
+                                   class="score-input" id="score2_${index}">
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">Статус матча:</div>
+                        <select class="status-select" id="status_${index}">
+                            <option value="not-started" ${match.status === 'not-started' ? 'selected' : ''}>
+                                Еще не начался
+                            </option>
+                            <option value="in-progress" ${match.status === 'in-progress' ? 'selected' : ''}>
+                                В процессе
+                            </option>
+                            <option value="finished" ${match.status === 'finished' ? 'selected' : ''}>
+                                Завершен
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <button class="update-btn" onclick="updateMatch(${index})">
+                        <i class="fas fa-sync-alt"></i> Обновить матч
+                    </button>
+                `;
+                
+                matchesControl.appendChild(matchControl);
+            });
+        }
+        
+        // Функция для обновления матча
+        function updateMatch(index) {
+            const score1Input = document.getElementById(`score1_${index}`);
+            const score2Input = document.getElementById(`score2_${index}`);
+            const statusSelect = document.getElementById(`status_${index}`);
+            
+            // Получаем новые значения
+            const newScore1 = parseInt(score1Input.value) || 0;
+            const newScore2 = parseInt(score2Input.value) || 0;
+            const newStatus = statusSelect.value;
+            
+            // Обновляем данные матча
+            matches[index].score1 = newScore1;
+            matches[index].score2 = newScore2;
+            matches[index].status = newStatus;
+            
+            // Устанавливаем текст статуса
+            switch(newStatus) {
+                case 'not-started':
+                    matches[index].statusText = 'ЕЩЕ НЕ НАЧАЛСЯ';
+                    break;
+                case 'in-progress':
+                    matches[index].statusText = 'В ПРОЦЕССЕ';
+                    break;
+                case 'finished':
+                    matches[index].statusText = 'ЗАВЕРШЕН';
+                    break;
+            }
+            
+            // Перерисовываем матчи
+            renderMatches();
+            
+            // Показываем уведомление
+            showNotification(`Матч ${index + 1} успешно обновлен!`);
+        }
+        
+        // Функция для показа уведомления
+        function showNotification(message) {
+            // Создаем элемент уведомления
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background-color: var(--accent-blue);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 5px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                z-index: 1000;
+                font-weight: 600;
+                animation: slideIn 0.3s ease-out;
+            `;
+            
+            notification.innerHTML = `
+                <i class="fas fa-check-circle" style="margin-right: 10px;"></i>${message}
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Удаляем уведомление через 3 секунды
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-out';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+            
+            // Добавляем стили для анимации
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
         // Функция для эффекта "перерыв на белый"
         function activateWhiteBreak() {
             document.body.classList.add('white-break');
@@ -561,29 +832,11 @@
             // Рендерим матчи
             renderMatches();
             
+            // Рендерим панели управления
+            renderControls();
+            
             // Назначаем обработчик для кнопки "перерыв на белый"
             document.getElementById('whiteBreakBtn').addEventListener('click', activateWhiteBreak);
-            
-            // Пример изменения статуса матча через 10 секунд (для демонстрации)
-            setTimeout(() => {
-                // Изменяем статус первого матча на "В ПРОГРЕССЕ"
-                matches[0].status = "in-progress";
-                matches[0].statusText = "В ПРОГРЕССЕ";
-                matches[0].score1 = 1;
-                matches[0].score2 = 0;
-                
-                renderMatches();
-            }, 10000);
-            
-            // Изменяем статус второго матча через 20 секунд
-            setTimeout(() => {
-                matches[1].status = "finished";
-                matches[1].statusText = "ЗАВЕРШЕН";
-                matches[1].score1 = 3;
-                matches[1].score2 = 2;
-                
-                renderMatches();
-            }, 20000);
         });
     </script>
 </body>
