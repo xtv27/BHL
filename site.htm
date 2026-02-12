@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Список с отметками · Копирование отмеченных</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(145deg, #f6f9fc 0%, #e9edf2 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-wrapper, .table-wrapper {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* стили для логин-формы (никто не узнает !) */
+    .login-card {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 36px;
+      padding: 40px 30px;
+      box-shadow: 0 25px 40px -10px rgba(0,20,40,0.25);
+      border: 1px solid rgba(255,255,255,0.4);
+      text-align: center;
+      max-width: 460px;
+      margin: 0 auto;
+    }
+
+    .login-card h1 {
+      font-size: 2.1rem;
+      font-weight: 600;
+      color: #0a2a44;
+      letter-spacing: -0.5px;
+      margin-bottom: 28px;
+      text-shadow: 0 2px 3px rgba(255,255,255,0.5);
+    }
+
+    .input-group {
+      margin-bottom: 24px;
+      text-align: left;
+    }
+
+    .input-group label {
+      display: block;
+      font-weight: 600;
+      color: #1e3b5c;
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+      letter-spacing: 0.3px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 16px 20px;
+      background: #ffffff;
+      border: 2px solid #dbe2e8;
+      border-radius: 50px;
+      font-size: 1.05rem;
+      transition: all 0.2s ease;
+      outline: none;
+      color: #0a1a2a;
+      font-weight: 500;
+    }
+
+    .input-group input:focus {
+      border-color: #2a6f9c;
+      box-shadow: 0 0 0 4px rgba(42,111,156,0.1);
+      background: white;
+    }
+
+    .login-btn {
+      background: #0a2a44;
+      color: white;
+      border: none;
+      padding: 16px 32px;
+      width: 100%;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: 0.15s;
+      box-shadow: 0 8px 16px -4px rgba(10,42,68,0.3);
+      border: 1px solid rgba(255,255,255,0.2);
+      margin-top: 12px;
+    }
+
+    .login-btn:hover {
+      background: #1e4b6e;
+      transform: scale(1.01);
+    }
+
+    .error-message {
+      color: #c4283c;
+      background: #ffeaee;
+      padding: 12px;
+      border-radius: 60px;
+      margin-top: 20px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-left: 6px solid #c4283c;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    /* ------ ОСНОВНАЯ ТАБЛИЦА (доступна только после входа) ------ */
+    .table-card {
+      background: white;
+      border-radius: 36px;
+      padding: 30px 25px;
+      box-shadow: 0 30px 50px -20px rgba(0,0,0,0.3);
+      backdrop-filter: blur(4px);
+      border: 1px solid #ffffffaa;
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .table-header h2 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: #0a2a44;
+      letter-spacing: -0.5px;
+    }
+
+    .logout-btn {
+      background: transparent;
+      border: 2px solid #2a6f9c;
+      color: #1e3b5c;
+      padding: 10px 24px;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+      background: rgba(255,255,255,0.5);
+    }
+
+    .logout-btn:hover {
+      background: #2a6f9c;
+      color: white;
+    }
+
+    /* сама таблица */
+    .names-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 6px 14px rgba(0,10,20,0.06);
+    }
+
+    .names-table th {
+      background: #0a2a44;
+      color: white;
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 18px 12px;
+      text-align: left;
+      border-right: 1px solid #264e6e;
+    }
+
+    .names-table th:last-child {
+      border-right: none;
+    }
+
+    .names-table td {
+      background: white;
+      padding: 12px 16px;
+      border-bottom: 1px solid #dee8f0;
+      vertical-align: middle;
+      font-size: 1.02rem;
+    }
+
+    .names-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .fio-col {
+      font-weight: 500;
+      color: #0a1e2e;
+    }
+
+    .plus-col {
+      text-align: center;
+      width: 90px;
+      background: #fafdff;
+    }
+
+    .plus-btn {
+      background: none;
+      border: 2px dashed #9fb7c9;
+      color: #2a6f9c;
+      font-size: 1.6rem;
+      font-weight: 600;
+      width: 48px;
+      height: 48px;
+      line-height: 1;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.15s;
+      background: white;
+    }
+
+    .plus-btn.active {
+      background: #1f6e43;
+      border: 2px solid #1f6e43;
+      color: white;
+      font-size: 2rem;
+      border-radius: 50%;
+      box-shadow: 0 6px 12px rgba(31,110,67,0.3);
+    }
+
+    .plus-btn:hover {
+      background: #cbe0ed;
+      border-color: #2a6f9c;
+    }
+
+    .plus-btn.active:hover {
+      background: #2b8c53;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Футер таблицы — кнопки и счетчик */
+    .table-footer {
+      margin-top: 28px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .stats-area {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      color: #2a4d6e;
+      font-weight: 600;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 14px;
+    }
+
+    .primary-btn {
+      background: #0a2a44;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: 0.15s;
+      border: 1px solid rgba(255,255,255,0.2);
+      box-shadow: 0 6px 12px rgba(10,42,68,0.2);
+    }
+
+    .primary-btn:hover {
+      background: #1e4b6e;
+      transform: scale(1.02);
+    }
+
+    .reset-btn {
+      background: none;
+      border: 2px solid #9fb7c9;
+      color: #1e3b5c;
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: 0.15s;
+      background: rgba(255,255,255,0.6);
+    }
+
+    .reset-btn:hover {
+      background: #dbe2e8;
+      border-color: #2a6f9c;
+    }
+
+    .copy-notification {
+      background: #1f6e43;
+      color: white;
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-weight: 600;
+      animation: fadeOut 3s forwards;
+      margin-left: 10px;
+    }
+
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      70% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    @media (max-width: 600px) {
+      .table-card { padding: 18px; }
+      .names-table td { padding: 10px 8px; }
+      .plus-btn { width: 42px; height: 42px; font-size: 1.4rem; }
+      .table-footer { flex-direction: column; align-items: stretch; }
+      .action-buttons { justify-content: flex-end; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="loginContainer" class="login-wrapper">
+  <div class="login-card">
+    <h1>⚡ вход</h1>
+    <div class="input-group">
+      <label>Логин</label>
+      <input type="text" id="loginInput" placeholder="Admin" autocomplete="off">
+    </div>
+    <div class="input-group">
+      <label>Пароль</label>
+      <input type="password" id="passwordInput" placeholder="••••••••" autocomplete="off">
+    </div>
+    <button class="login-btn" id="loginBtn">ВОЙТИ</button>
+    <div id="loginError" class="error-message">Неверный логин или пароль. Доступ только для Admin.</div>
+    <div style="margin-top: 24px; font-size: 0.8rem; opacity: 0.5; color: #2a3f54;">только для ответственных лиц</div>
+  </div>
+</div>
+
+<!-- Основной контент – ТАБЛИЦА + КНОПКА КОПИРОВАНИЯ -->
+<div id="tableContainer" class="table-wrapper hidden">
+  <div class="table-card">
+    <div class="table-header">
+      <h2>📋 состав · отметки</h2>
+      <button id="logoutBtn" class="logout-btn">🚪 выйти</button>
+    </div>
+
+    <table class="names-table" id="attendanceTable">
+      <thead>
+        <tr>
+          <th>Фамилия Имя Отчество</th>
+          <th class="plus-col">➕</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <!-- Динамическая загрузка -->
+      </tbody>
+    </table>
+
+    <!-- НИЖНЯЯ ПАНЕЛЬ: счетчик, кнопка сброса, КНОПКА КОПИРОВАНИЯ -->
+    <div class="table-footer">
+      <div class="stats-area">
+        <span id="totalMarked">➕ с плюсом: 0</span>
+        <button id="resetAllBtn" class="reset-btn">сбросить все</button>
+      </div>
+      <div class="action-buttons">
+        <button id="copyNamesBtn" class="primary-btn">
+          📋 Копировать имена с +
+        </button>
+      </div>
+    </div>
+    <div id="copyMessageContainer" style="margin-top: 12px; min-height: 40px;"></div>
+    <div style="font-size: 0.85rem; color: #456f8c; margin-top: 8px; padding-left: 8px;">
+      * нажмите на кружок, чтобы поставить + (ещё раз — убрать)
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    "use strict";
+
+    // ---------- СТРОГО КОНФИДЕНЦИАЛЬНО ----------
+    const SECRET_LOGIN = "Admin";
+    const SECRET_PASSWORD = "Admin0000";
+    // -------------------------------------------
+
+    // ---------- ПОЛНЫЙ СПИСОК ФАМИЛИЙ (32) ----------
+    const FULL_NAMES = [
+      "Александр Дмитриевич Луханин",
+      "Анна Ивановна Козырева",
+      "Артем Алексеевич Корольков",
+      "Артём Михайлович Шатунов",
+      "Варвара Сергеевна Панченко",
+      "Вероника Павловна Сахманова",
+      "Гор Арманович Мартиросян",
+      "Дамир Александрович Беспалов",
+      "Даниил Витальевич Данилишин",
+      "Дарья Анатольевна Суховая",
+      "Денис Владимирович Нестеренко",
+      "Диана Петровна Левковская",
+      "Диана Владимировна Устюгова",
+      "Дмитрий Антонович Волков",
+      "Елена Константиновна Рольман",
+      "Ибодуллохуджа Раззуллохужаевич Фатидинов",
+      "Иван Дмитриевич Свердлов",
+      "Игорь Денисович Калинов",
+      "Илья Геннадьевич Петрунин",
+      "Карина Александровна Бойко",
+      "Кирилл Андреевич Стагнуто",
+      "Максим Сергеевич Цапарчук",
+      "Маргарита Олеговна Кудинова",
+      "Мирон Станиславович Козуб",
+      "Михаил Игоревич Бекишев",
+      "Михаил Вячеславович Мозговой",
+      "Михаил Иванович Рудь",
+      "Насриддин Рамзуллохужаевич Фатидинов",
+      "Полина Александровна Бондаренко",
+      "Роман Александрович Хохлов",
+      "Филипп Павлович Буреев",
+      "Юлия Александровна Могильникова"
+    ];
+
+    // Состояния плюсов
+    let plusState = new Array(FULL_NAMES.length).fill(false);
+
+    // DOM-элементы
+    const loginContainer = document.getElementById('loginContainer');
+    const tableContainer = document.getElementById('tableContainer');
+    const loginBtn = document.getElementById('loginBtn');
+    const loginInput = document.getElementById('loginInput');
+    const passwordInput = document.getElementById('passwordInput');
+    const loginError = document.getElementById('loginError');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const tableBody = document.getElementById('tableBody');
+    const totalMarkedSpan = document.getElementById('totalMarked');
+    const resetAllBtn = document.getElementById('resetAllBtn');
+    const copyNamesBtn = document.getElementById('copyNamesBtn');
+    const copyMessageContainer = document.getElementById('copyMessageContainer');
+
+    // ---------- ФУНКЦИИ ТАБЛИЦЫ ----------
+    function renderTable() {
+      let html = '';
+      for (let i = 0; i < FULL_NAMES.length; i++) {
+        const name = FULL_NAMES[i];
+        const isActive = plusState[i];
+        const btnClass = isActive ? 'plus-btn active' : 'plus-btn';
+        const symbol = isActive ? '+' : '➕';
+        html += `<tr>
+          <td class="fio-col">${name}</td>
+          <td class="plus-col">
+            <button class="${btnClass}" data-index="${i}" aria-label="поставить плюс">${symbol}</button>
+          </td>
+        </tr>`;
+      }
+      tableBody.innerHTML = html;
+      updateTotalCounter();
+    }
+
+    function updateTotalCounter() {
+      const count = plusState.filter(val => val === true).length;
+      totalMarkedSpan.innerText = `➕ с плюсом: ${count}`;
+    }
+
+    function resetAllPluses() {
+      plusState = new Array(FULL_NAMES.length).fill(false);
+      renderTable();
+      hideCopyMessage(); // убираем старые уведомления
+    }
+
+    // ---------- КОПИРОВАНИЕ ИМЕН С ПЛЮСОМ ----------
+    function getMarkedNames() {
+      const marked = [];
+      for (let i = 0; i < FULL_NAMES.length; i++) {
+        if (plusState[i]) {
+          marked.push(FULL_NAMES[i]);
+        }
+      }
+      return marked;
+    }
+
+    function showCopyMessage(text, isSuccess = true) {
+      // очищаем предыдущие сообщения
+      copyMessageContainer.innerHTML = '';
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'copy-notification';
+      msgDiv.style.animation = 'fadeOut 3s forwards';
+      msgDiv.style.background = isSuccess ? '#1f6e43' : '#b13b3b';
+      msgDiv.innerText = text;
+      copyMessageContainer.appendChild(msgDiv);
+
+      // автоматически удалить через 3.5 сек
+      setTimeout(() => {
+        if (msgDiv.parentNode) msgDiv.remove();
+      }, 3500);
+    }
+
+    function hideCopyMessage() {
+      copyMessageContainer.innerHTML = '';
+    }
+
+    function copyMarkedNamesToClipboard() {
+      const markedNames = getMarkedNames();
+      
+      if (markedNames.length === 0) {
+        showCopyMessage('❌ Нет ни одной отметки «+»', false);
+        return;
+      }
+
+      // Формируем текст: каждое имя с новой строки
+      const textToCopy = markedNames.join('\n');
+
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        showCopyMessage(`✅ Скопировано: ${markedNames.length} чел.`, true);
+      }).catch(err => {
+        console.error('Ошибка копирования:', err);
+        showCopyMessage('❌ Не удалось скопировать', false);
+        
+        // fallback для старых браузеров
+        const textarea = document.createElement('textarea');
+        textarea.value = textToCopy;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showCopyMessage(`✅ Скопировано (резервно): ${markedNames.length} чел.`, true);
+      });
+    }
+
+    // ---------- ОБРАБОТЧИКИ ----------
+    function handlePlusClick(e) {
+      const target = e.target.closest('.plus-btn');
+      if (!target) return;
+      e.preventDefault();
+      const index = target.getAttribute('data-index');
+      if (index === null) return;
+      const idx = parseInt(index, 10);
+      if (!isNaN(idx) && idx >= 0 && idx < plusState.length) {
+        plusState[idx] = !plusState[idx];
+        renderTable();
+        // при изменении плюсов скрываем уведомление о копировании (актуальность)
+        hideCopyMessage();
+      }
+    }
+
+    // ---------- ВХОД / ВЫХОД ----------
+    function handleLogin() {
+      const login = loginInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      if (login === SECRET_LOGIN && password === SECRET_PASSWORD) {
+        loginError.classList.remove('show');
+        loginContainer.classList.add('hidden');
+        tableContainer.classList.remove('hidden');
+        plusState = new Array(FULL_NAMES.length).fill(false);
+        renderTable();
+        hideCopyMessage();
+        
+        // Полная очистка полей
+        loginInput.value = '';
+        passwordInput.value = '';
+      } else {
+        loginError.classList.add('show');
+        tableContainer.classList.add('hidden');
+        loginContainer.classList.remove('hidden');
+        loginInput.value = '';
+        passwordInput.value = '';
+      }
+    }
+
+    function handleLogout() {
+      tableContainer.classList.add('hidden');
+      loginContainer.classList.remove('hidden');
+      loginInput.value = '';
+      passwordInput.value = '';
+      loginError.classList.remove('show');
+      plusState = new Array(FULL_NAMES.length).fill(false);
+      hideCopyMessage();
+    }
+
+    // ---------- ПРИВЯЗКА СОБЫТИЙ ----------
+    loginBtn.addEventListener('click', handleLogin);
+    loginInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleLogin(); });
+    passwordInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleLogin(); });
+
+    logoutBtn.addEventListener('click', handleLogout);
+
+    tableContainer.addEventListener('click', (e) => {
+      if (!tableContainer.classList.contains('hidden')) {
+        handlePlusClick(e);
+      }
+    });
+
+    resetAllBtn.addEventListener('click', () => {
+      if (!tableContainer.classList.contains('hidden')) {
+        resetAllPluses();
+      }
+    });
+
+    // КНОПКА КОПИРОВАНИЯ — собирает имена с плюсом
+    copyNamesBtn.addEventListener('click', () => {
+      if (!tableContainer.classList.contains('hidden')) {
+        copyMarkedNamesToClipboard();
+      }
+    });
+
+    // ---------- INIT ----------
+    window.addEventListener('load', () => {
+      tableContainer.classList.add('hidden');
+      loginContainer.classList.remove('hidden');
+      loginError.classList.remove('show');
+      loginInput.value = '';
+      passwordInput.value = '';
+      plusState = new Array(FULL_NAMES.length).fill(false);
+      hideCopyMessage();
+      setTimeout(() => loginInput.focus(), 50);
+    });
+
+  })();
+</script>
+
+<!--
+  Итоговые возможности:
+  - Вход только по Admin / Admin0000, поля всегда пустые.
+  - Таблица с 32 фамилиями, колонка для плюса.
+  - Кнопка "Копировать имена с +" собирает ВСЕХ отмеченных и копирует в буфер (каждое имя с новой строки).
+  - При копировании всплывает зелёное уведомление с количеством.
+  - Счётчик обновляется, сброс работает.
+-->
+</body>
+</html>
