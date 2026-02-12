@@ -3,544 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Восточная хоккейная лига (ВХЛ)</title>
+    <title>ВХЛ — Восточная хоккейная лига</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Courier New', Courier, monospace;
         }
-        
-        :root {
-            --primary-black: #000000;
-            --secondary-black: #121212;
-            --accent-black: #1a1a1a;
-            --primary-white: #ffffff;
-            --accent-white: #f0f0f0;
-            --accent-red: #e10600;
-            --accent-blue: #0066cc;
-            --playoff-gold: #ffd700;
-        }
-        
+
         body {
-            background-color: var(--primary-black);
-            color: var(--primary-white);
-            line-height: 1.6;
-            min-height: 100vh;
-            transition: background-color 0.5s;
+            background-color: #000;
+            color: #fff;
+            line-height: 1.4;
+            padding: 30px 20px;
         }
-        
-        /* Анимация перерыва на белый */
-        @keyframes whiteBreak {
-            0% { background-color: var(--primary-black); }
-            50% { background-color: var(--primary-white); }
-            100% { background-color: var(--primary-black); }
-        }
-        
-        .white-break {
-            animation: whiteBreak 2s ease-in-out;
-        }
-        
+
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 0 20px;
+            border: 2px solid #fff;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
         }
-        
-        /* Шапка */
-        header {
-            background-color: var(--secondary-black);
-            padding: 25px 0;
-            border-bottom: 3px solid var(--accent-red);
-            position: relative;
-            overflow: hidden;
+
+        /* ЗАГОЛОВОК */
+        .league-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            letter-spacing: 8px;
+            text-align: center;
+            border-bottom: 3px solid #fff;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            word-break: break-word;
         }
-        
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .logo-icon {
-            font-size: 2.5rem;
-            color: var(--accent-red);
-        }
-        
-        .logo-text h1 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-        
-        .logo-text h2 {
-            font-size: 1.1rem;
-            font-weight: 400;
-            color: #aaa;
-            letter-spacing: 3px;
-            margin-top: 5px;
-        }
-        
-        /* Кнопка перерыва */
-        .break-btn {
-            background-color: var(--accent-red);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 30px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            letter-spacing: 1px;
-        }
-        
-        .break-btn:hover {
-            background-color: #ff1a1a;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(225, 6, 0, 0.3);
-        }
-        
-        /* Основной контент */
-        main {
-            padding: 40px 0;
-        }
-        
-        .content-grid {
+
+        /* КОМАНДЫ */
+        .teams-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
             margin-bottom: 50px;
         }
-        
-        @media (max-width: 768px) {
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        /* Секции */
-        .section-title {
-            font-size: 1.8rem;
-            margin-bottom: 25px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--accent-red);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .section-title i {
-            color: var(--accent-red);
-        }
-        
-        /* Команды */
-        .teams-container {
-            background-color: var(--secondary-black);
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        .teams-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
+
         .team-card {
-            background-color: var(--accent-black);
-            border-radius: 8px;
+            border: 2px solid #fff;
             padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            transition: transform 0.3s;
-            border-left: 4px solid var(--accent-red);
+            background-color: #000;
         }
-        
-        .team-card:hover {
-            transform: translateX(5px);
+
+        .team-name {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #fff;
+            padding-bottom: 5px;
         }
-        
-        .team-logo {
-            width: 60px;
-            height: 60px;
-            background-color: #333;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            font-weight: 700;
+
+        .team-desc {
+            font-size: 1rem;
+            color: #ccc;
         }
-        
-        .amuris-logo {
-            background-color: #0d3b66;
-            color: #f4d35e;
+
+        /* РАСПИСАНИЕ МАТЧЕЙ */
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            border-bottom: 3px solid #fff;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            letter-spacing: 4px;
         }
-        
-        .taifun-logo {
-            background-color: #1a1a1a;
-            color: #e10600;
-        }
-        
-        .team-info h3 {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-        }
-        
-        .team-info p {
-            color: #aaa;
-            font-size: 0.9rem;
-        }
-        
-        /* Расписание матчей */
-        .matches-container {
-            background-color: var(--secondary-black);
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-        
+
         .matches-list {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 25px;
+            margin-bottom: 50px;
         }
-        
-        .match-card {
-            background-color: var(--accent-black);
-            border-radius: 8px;
+
+        .match-item {
+            border: 2px solid #fff;
             padding: 20px;
-            transition: transform 0.3s;
-            border-left: 4px solid var(--accent-blue);
+            display: flex;
+            flex-direction: column;
             position: relative;
         }
-        
-        .match-card:hover {
-            transform: translateX(5px);
-        }
-        
+
         .match-date {
+            font-size: 1.1rem;
+            font-weight: 700;
             color: #aaa;
-            font-size: 0.9rem;
             margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            border-bottom: 1px dashed #fff;
+            padding-bottom: 5px;
         }
-        
+
         .match-teams {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
         }
-        
-        .team-name {
-            font-size: 1.4rem;
-            font-weight: 600;
+
+        .team-left, .team-right {
+            font-size: 1.6rem;
+            font-weight: 800;
         }
-        
-        .amuris-name {
-            color: #f4d35e;
+
+        .match-score {
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin: 0 20px;
         }
-        
-        .taifun-name {
-            color: #e10600;
-        }
-        
-        .score {
-            font-size: 2rem;
-            font-weight: 700;
-            margin: 0 15px;
-        }
-        
+
         .match-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        
-        .status-not-started {
-            background-color: #333;
+            margin-top: 10px;
+            font-size: 1rem;
+            font-weight: 700;
             color: #ffcc00;
+            border-top: 1px solid #333;
+            padding-top: 10px;
         }
-        
-        .status-in-progress {
-            background-color: #003300;
-            color: #00cc00;
-        }
-        
-        .status-finished {
-            background-color: #1a1a1a;
-            color: #ccc;
-        }
-        
-        /* Стикер ПЛЕЙ-ОФФ */
+
+        /* ПЛЕЙ-ОФФ БАДЖ */
         .playoff-badge {
             position: absolute;
-            top: -5px;
-            right: -5px;
-            background-color: var(--playoff-gold);
+            top: -10px;
+            right: -10px;
+            background-color: #ffd700;
             color: #000;
+            font-weight: 900;
+            padding: 8px 16px;
+            border-radius: 0;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            border: 2px solid #fff;
+            box-shadow: 0 0 20px #ffd700;
+            animation: glowPlayoff 1.5s infinite alternate;
+        }
+
+        @keyframes glowPlayoff {
+            from { box-shadow: 0 0 10px #ffd700, 0 0 20px #ffaa00; }
+            to { box-shadow: 0 0 20px #ffd700, 0 0 40px #ff8c00; }
+        }
+
+        /* ТАБЛИЦА ПЛЕЙ-ОФФ — 2 МЕСТА */
+        .playoff-table {
+            border: 3px solid #fff;
+            padding: 25px;
+            margin-top: 30px;
+            background-color: #0a0a0a;
+        }
+
+        .playoff-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #fff;
+            padding-bottom: 10px;
+            letter-spacing: 5px;
+            color: #ffd700;
+        }
+
+        .playoff-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 100px 100px;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            padding: 15px 0;
+            font-size: 1.2rem;
+        }
+
+        .playoff-header {
+            border-bottom: 2px solid #fff;
+            color: #fff;
+            font-weight: 900;
+            margin-bottom: 5px;
+        }
+
+        .playoff-position {
+            font-weight: 900;
+            color: #ffd700;
+        }
+
+        .playoff-team {
             font-weight: 700;
-            font-size: 0.8rem;
-            padding: 8px 12px;
-            border-radius: 30px;
-            letter-spacing: 2px;
-            box-shadow: 0 0 20px #ffd700, 0 0 40px #ffaa00;
-            animation: glow 1.5s infinite alternate;
-            z-index: 10;
-            border: 1px solid rgba(255, 215, 0, 0.8);
         }
-        
-        @keyframes glow {
-            from {
-                box-shadow: 0 0 10px #ffd700, 0 0 20px #ffaa00, 0 0 30px #ff8c00;
-            }
-            to {
-                box-shadow: 0 0 20px #ffd700, 0 0 40px #ffaa00, 0 0 60px #ff8c00;
-            }
+
+        .playoff-wins, .playoff-losses {
+            text-align: center;
         }
-        
-        /* Сообщение ПЛЕЙ-ОФФ НАЧИНАЕТСЯ С 15 ФЕВРАЛЯ - 3 СТРОКИ */
+
+        /* АНИМАЦИЯ ПЕРЕРЫВ НА БЕЛЫЙ */
+        @keyframes whiteFlash {
+            0% { background-color: #000; }
+            50% { background-color: #fff; }
+            100% { background-color: #000; }
+        }
+
+        .white-break {
+            animation: whiteFlash 2s ease-in-out;
+        }
+
+        .break-btn {
+            background-color: #fff;
+            color: #000;
+            border: 3px solid #fff;
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-bottom: 30px;
+            letter-spacing: 3px;
+            width: 100%;
+        }
+
+        .break-btn:hover {
+            background-color: #000;
+            color: #fff;
+        }
+
+        /* СООБЩЕНИЕ ПЛЕЙ-ОФФ — 3 СТРОКИ */
         .playoff-message {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.95);
-            color: var(--playoff-gold);
-            font-size: 3rem;
+            background-color: #000;
+            color: #ffd700;
+            font-size: 2.8rem;
             font-weight: 900;
             text-align: center;
-            padding: 30px 40px;
-            border-radius: 15px;
-            border: 3px solid var(--playoff-gold);
-            box-shadow: 0 0 50px rgba(255, 215, 0, 0.8), 0 0 100px rgba(255, 165, 0, 0.5);
+            padding: 30px 50px;
+            border: 4px solid #ffd700;
+            box-shadow: 0 0 50px #ffd700;
             z-index: 9999;
-            letter-spacing: 5px;
+            letter-spacing: 8px;
             text-transform: uppercase;
-            max-width: 90%;
-            width: auto;
-            line-height: 1.4;
+            line-height: 1.5;
             animation: harshAppear 0.1s ease-out;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
         }
-        
-        .playoff-line {
+
+        .playoff-message span {
             display: block;
-            white-space: nowrap;
         }
-        
+
         @keyframes harshAppear {
             0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
             100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
         }
-        
-        @media (max-width: 768px) {
-            .playoff-message {
-                font-size: 1.8rem;
-                padding: 20px;
-                letter-spacing: 3px;
-            }
-            .playoff-line {
-                white-space: normal;
-            }
+
+        @media (max-width: 700px) {
+            .container { padding: 15px; }
+            .league-title { font-size: 2rem; }
+            .teams-grid { grid-template-columns: 1fr; }
+            .match-teams { flex-direction: column; gap: 10px; }
+            .playoff-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .playoff-header { display: none; }
+            .playoff-message { font-size: 1.8rem; padding: 20px; letter-spacing: 4px; }
         }
-        
-        @media (max-width: 480px) {
-            .playoff-message {
-                font-size: 1.4rem;
-                padding: 15px;
-            }
-        }
-        
-        /* Футер */
+
         footer {
-            background-color: var(--secondary-black);
-            padding: 30px 0;
+            margin-top: 50px;
             border-top: 1px solid #333;
-            margin-top: 30px;
-        }
-        
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        
-        .footer-logo {
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-        
-        .copyright {
-            color: #aaa;
-            font-size: 0.9rem;
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .social-links a {
-            color: #aaa;
-            font-size: 1.2rem;
-            transition: color 0.3s;
-        }
-        
-        .social-links a:hover {
-            color: var(--accent-red);
-        }
-        
-        /* Декоративные элементы */
-        .hockey-puck {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            background-color: #333;
-            border-radius: 50%;
-            top: 20px;
-            right: 15%;
-            opacity: 0.5;
-        }
-        
-        .hockey-stick {
-            position: absolute;
-            width: 80px;
-            height: 10px;
-            background-color: #444;
-            bottom: 10px;
-            right: 10%;
-            transform: rotate(45deg);
-            opacity: 0.5;
-        }
-        
-        /* Адаптивность */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
-            }
-            
-            .logo {
-                justify-content: center;
-            }
-            
-            .footer-content {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .hockey-puck, .hockey-stick {
-                display: none;
-            }
+            padding-top: 20px;
+            text-align: center;
+            color: #777;
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <div class="logo-icon">
-                        <i class="fas fa-hockey-puck"></i>
-                    </div>
-                    <div class="logo-text">
-                        <h1>ВОСТОЧНАЯ ХОККЕЙНАЯ ЛИГА</h1>
-                        <h2>ВХЛ</h2>
-                    </div>
-                </div>
-                <button class="break-btn" id="whiteBreakBtn">
-                    <i class="fas fa-bolt"></i> ПЕРЕРЫВ НА БЕЛЫЙ
-                </button>
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div style="font-size: 1.5rem; font-weight: 900;">⚡ ВХЛ</div>
+            <button class="break-btn" id="whiteBreakBtn">ПЕРЕРЫВ НА БЕЛЫЙ</button>
+        </div>
+
+        <h1 class="league-title">ВОСТОЧНАЯ<br>ХОККЕЙНАЯ ЛИГА</h1>
+
+        <!-- КОМАНДЫ -->
+        <div class="teams-grid">
+            <div class="team-card">
+                <div class="team-name">АМУРИС</div>
+                <div class="team-desc">Основан в 2010 году. Базируется в Хабаровске.</div>
+            </div>
+            <div class="team-card">
+                <div class="team-name">ТАЙФУН</div>
+                <div class="team-desc">Основан в 2012 году. Базируется во Владивостоке.</div>
             </div>
         </div>
-        <div class="hockey-puck"></div>
-        <div class="hockey-stick"></div>
-    </header>
-    
-    <main class="container">
-        <div class="content-grid">
-            <section class="teams-section">
-                <h2 class="section-title">
-                    <i class="fas fa-users"></i> КОМАНДЫ ЛИГИ
-                </h2>
-                <div class="teams-container">
-                    <div class="teams-list">
-                        <div class="team-card">
-                            <div class="team-logo amuris-logo">А</div>
-                            <div class="team-info">
-                                <h3>АМУРИС</h3>
-                                <p>Основан в 2010 году. Базируется в Хабаровске.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="team-card">
-                            <div class="team-logo taifun-logo">Т</div>
-                            <div class="team-info">
-                                <h3>ТАЙФУН</h3>
-                                <p>Основан в 2012 году. Базируется во Владивостоке.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <section class="matches-section">
-                <h2 class="section-title">
-                    <i class="fas fa-calendar-alt"></i> РАСПИСАНИЕ МАТЧЕЙ
-                </h2>
-                <div class="matches-container">
-                    <div class="matches-list" id="matchesList">
-                        <!-- Матчи будут добавлены через JavaScript -->
-                    </div>
-                </div>
-            </section>
-        </div>
-    </main>
-    
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">ВХЛ • ВОСТОЧНАЯ ХОККЕЙНАЯ ЛИГА</div>
-                <div class="copyright">© 2026 Восточная хоккейная лига. Все права защищены.</div>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-vk"></i></a>
-                    <a href="#"><i class="fab fa-telegram"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-    </footer>
+
+        <!-- РАСПИСАНИЕ МАТЧЕЙ -->
+        <h2 class="section-title">РАСПИСАНИЕ МАГЧЕН</h2>
+        <div class="matches-list" id="matchesList"></div>
+
+        <!-- ТАБЛИЦА ПЛЕЙ-ОФФ (2 МЕСТА) - ДАННЫЕ МЕНЯЕТЕ ВРУЧНУЮ В КОДЕ -->
+        <div class="playoff-table" id="playoffTable"></div>
+
+        <footer>
+            ВХЛ • ВОСТОЧНАЯ ХОККЕЙНАЯ ЛИГА • 2026
+        </footer>
+    </div>
 
     <script>
-        // ДАННЫЕ МАТЧЕЙ - ВЫ МОЖЕТЕ ИЗМЕНЯТЬ ЭТИ ЗНАЧЕНИЯ ВРУЧНУЮ В КОДЕ
+        // ===========================================
+        // ДАННЫЕ МАТЧЕЙ - МЕНЯЙТЕ ЗДЕСЬ ВРУЧНУЮ
+        // ===========================================
         const matches = [
             {
                 date: "02.05.2026",
@@ -550,9 +321,8 @@
                 team2: "ТАЙФУН",
                 score1: 0,
                 score2: 0,
-                status: "not-started",
-                statusText: "ЕЩЕ НЕ НАЧАЛСЯ",
-                isPlayoff: true  // Плей-офф матч
+                status: "ЕЩЕ НЕ НАЧАЛСЯ",
+                isPlayoff: true   // ПЛЕЙ-ОФФ БАДЖ
             },
             {
                 date: "05.05.2026",
@@ -562,9 +332,8 @@
                 team2: "АМУРИС",
                 score1: 0,
                 score2: 0,
-                status: "not-started",
-                statusText: "ЕЩЕ НЕ НАЧАЛСЯ",
-                isPlayoff: true  // Плей-офф матч
+                status: "ЕЩЕ НЕ НАЧАЛСЯ",
+                isPlayoff: true   // ПЛЕЙ-ОФФ БАДЖ
             },
             {
                 date: "09.05.2026",
@@ -574,9 +343,8 @@
                 team2: "ТАЙФУН",
                 score1: 0,
                 score2: 0,
-                status: "not-started",
-                statusText: "ЕЩЕ НЕ НАЧАЛСЯ",
-                isPlayoff: true  // Плей-офф матч
+                status: "ЕЩЕ НЕ НАЧАЛСЯ",
+                isPlayoff: true   // ПЛЕЙ-ОФФ БАДЖ
             },
             {
                 date: "12.05.2026",
@@ -586,123 +354,117 @@
                 team2: "АМУРИС",
                 score1: 0,
                 score2: 0,
-                status: "not-started",
-                statusText: "ЕЩЕ НЕ НАЧАЛСЯ",
-                isPlayoff: false // Обычный матч
-            },
-            {
-                date: "15.05.2026",
-                time: "19:30",
-                timezone: "ПО ХБР",
-                team1: "АМУРИС",
-                team2: "ТАЙФУН",
-                score1: 0,
-                score2: 0,
-                status: "not-started",
-                statusText: "ЕЩЕ НЕ НАЧАЛСЯ",
-                isPlayoff: false // Обычный матч
+                status: "ЕЩЕ НЕ НАЧАЛСЯ",
+                isPlayoff: false  // ОБЫЧНЫЙ МАТЧ
             }
         ];
-        
-        // Функция для отображения матчей
+
+        // ===========================================
+        // ДАННЫЕ ТАБЛИЦЫ ПЛЕЙ-ОФФ - 2 МЕСТА (МЕНЯЙТЕ ВРУЧНУЮ)
+        // ===========================================
+        const playoffData = {
+            title: "ПЛЕЙ-ОФФ 2026",
+            teams: [
+                { position: 1, team: "АМУРИС", wins: 4, losses: 2 },   // 1 МЕСТО
+                { position: 2, team: "ТАЙФУН", wins: 3, losses: 3 }    // 2 МЕСТО
+            ]
+        };
+
+        // ===========================================
+        // ОТОБРАЖЕНИЕ МАТЧЕЙ
+        // ===========================================
         function renderMatches() {
-            const matchesList = document.getElementById('matchesList');
-            matchesList.innerHTML = '';
-            
-            matches.forEach(match => {
-                const matchCard = document.createElement('div');
-                matchCard.className = 'match-card';
-                
-                // Определение классов для команд
-                const team1Class = match.team1 === 'АМУРИС' ? 'amuris-name' : 'taifun-name';
-                const team2Class = match.team2 === 'АМУРИС' ? 'amuris-name' : 'taifun-name';
-                
+            const list = document.getElementById('matchesList');
+            list.innerHTML = '';
+
+            matches.forEach(m => {
+                const item = document.createElement('div');
+                item.className = 'match-item';
+
                 let playoffBadge = '';
-                // Добавляем светящийся стикер ПЛЕЙ-ОФФ только если это плей-офф матч
-                if (match.isPlayoff) {
-                    playoffBadge = '<div class="playoff-badge"><i class="fas fa-trophy" style="margin-right: 5px;"></i>ПЛЕЙ-ОФФ</div>';
+                if (m.isPlayoff) {
+                    playoffBadge = '<div class="playoff-badge"><i class="fas fa-trophy"></i> ПЛЕЙ-ОФФ</div>';
                 }
-                
-                matchCard.innerHTML = playoffBadge + `
-                    <div class="match-date">
-                        <i class="far fa-calendar"></i> ${match.date} В ${match.time} ${match.timezone}
-                    </div>
+
+                item.innerHTML = playoffBadge + `
+                    <div class="match-date">${m.date} В ${m.time} ${m.timezone}</div>
                     <div class="match-teams">
-                        <div class="team-name ${team1Class}">${match.team1}</div>
-                        <div class="score">${match.score1} : ${match.score2}</div>
-                        <div class="team-name ${team2Class}">${match.team2}</div>
+                        <span class="team-left">${m.team1}</span>
+                        <span class="match-score">${m.score1} : ${m.score2}</span>
+                        <span class="team-right">${m.team2}</span>
                     </div>
-                    <div class="match-status status-${match.status}">
-                        <i class="far fa-clock"></i> ${match.statusText}
-                    </div>
+                    <div class="match-status">СТАТУС: ${m.status}</div>
                 `;
-                
-                matchesList.appendChild(matchCard);
+                list.appendChild(item);
             });
         }
-        
-        // Функция для проверки, наступило ли 15 февраля 2026 10:00 МСК
-        function isAfterPlayoffDeadline() {
-            const deadlineDate = new Date(2026, 1, 15, 10, 0, 0); // 15 февраля 2026, 10:00 МСК
-            const currentDate = new Date();
-            return currentDate >= deadlineDate;
-        }
-        
-        // Функция для показа сообщения "ПЛЕЙ-ОФФ НАЧИНАЕТСЯ С 15 ФЕВРАЛЯ" - 3 СТРОКИ
-        function showPlayoffMessage() {
-            // Проверяем, не наступил ли дедлайн
-            if (isAfterPlayoffDeadline()) {
-                console.log("Сообщение больше не показывается: прошло 15.02.2026 10:00 МСК");
-                return;
-            }
-            
-            // Проверяем, не показывали ли уже сообщение в этой сессии
-            if (sessionStorage.getItem('playoffMessageShown')) {
-                return;
-            }
-            
-            // Создаем элемент сообщения с 3 строками
-            const message = document.createElement('div');
-            message.className = 'playoff-message';
-            message.innerHTML = `
-                <span class="playoff-line">ПЛЕЙ-ОФФ</span>
-                <span class="playoff-line">НАЧИНАЕТСЯ</span>
-                <span class="playoff-line">С 15 ФЕВРАЛЯ</span>
+
+        // ===========================================
+        // ОТОБРАЖЕНИЕ ТАБЛИЦЫ ПЛЕЙ-ОФФ (2 МЕСТА)
+        // ===========================================
+        function renderPlayoffTable() {
+            const table = document.getElementById('playoffTable');
+            table.innerHTML = `
+                <div class="playoff-title">🏆 ${playoffData.title}</div>
+                <div class="playoff-row playoff-header">
+                    <div>МЕСТО</div>
+                    <div>КОМАНДА</div>
+                    <div>ПОБЕДЫ</div>
+                    <div>ПОРАЖЕНИЯ</div>
+                </div>
+                ${playoffData.teams.map(team => `
+                    <div class="playoff-row">
+                        <div class="playoff-position">#${team.position}</div>
+                        <div class="playoff-team">${team.team}</div>
+                        <div class="playoff-wins">${team.wins}</div>
+                        <div class="playoff-losses">${team.losses}</div>
+                    </div>
+                `).join('')}
             `;
-            
-            // Добавляем на страницу
-            document.body.appendChild(message);
-            
-            // Отмечаем, что сообщение показано
+        }
+
+        // ===========================================
+        // ПРОВЕРКА ДАТЫ 15 ФЕВРАЛЯ 2026 10:00 МСК
+        // ===========================================
+        function isAfterPlayoffDeadline() {
+            const deadline = new Date(2026, 1, 15, 10, 0, 0);
+            return new Date() >= deadline;
+        }
+
+        // ===========================================
+        // ПОКАЗ СООБЩЕНИЯ (3 СТРОКИ)
+        // ===========================================
+        function showPlayoffMessage() {
+            if (isAfterPlayoffDeadline()) return;
+            if (sessionStorage.getItem('playoffMessageShown')) return;
+
+            const msg = document.createElement('div');
+            msg.className = 'playoff-message';
+            msg.innerHTML = '<span>ПЛЕЙ-ОФФ</span><span>НАЧИНАЕТСЯ</span><span>С 15 ФЕВРАЛЯ</span>';
+            document.body.appendChild(msg);
+
             sessionStorage.setItem('playoffMessageShown', 'true');
-            
-            // Удаляем через 3 секунды
+
             setTimeout(() => {
-                if (message && message.parentNode) {
-                    message.remove();
-                }
+                if (msg.parentNode) msg.remove();
             }, 3000);
         }
-        
-        // Функция для эффекта "перерыв на белый"
+
+        // ===========================================
+        // ПЕРЕРЫВ НА БЕЛЫЙ
+        // ===========================================
         function activateWhiteBreak() {
             document.body.classList.add('white-break');
-            
-            // Удаляем класс после завершения анимации
-            setTimeout(() => {
-                document.body.classList.remove('white-break');
-            }, 2000);
+            setTimeout(() => document.body.classList.remove('white-break'), 2000);
         }
-        
-        // Инициализация при загрузке страницы
-        document.addEventListener('DOMContentLoaded', function() {
-            // Рендерим матчи
+
+        // ===========================================
+        // ЗАПУСК
+        // ===========================================
+        document.addEventListener('DOMContentLoaded', () => {
             renderMatches();
-            
-            // Назначаем обработчик для кнопки "перерыв на белый"
+            renderPlayoffTable();
             document.getElementById('whiteBreakBtn').addEventListener('click', activateWhiteBreak);
-            
-            // Показываем сообщение о плей-офф
             showPlayoffMessage();
         });
     </script>
