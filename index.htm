@@ -320,7 +320,7 @@
             }
         }
         
-        /* Сообщение ПЛЕЙ-ОФФ НАЧИНАЕТСЯ С 15 ФЕВРАЛЯ - 3 СТРОКИ */
+        /* Сообщение ПЛЕЙ-ОФФ НАЧИНАЕТСЯ */
         .playoff-message {
             position: fixed;
             top: 50%;
@@ -328,28 +328,18 @@
             transform: translate(-50%, -50%);
             background-color: rgba(0, 0, 0, 0.95);
             color: var(--playoff-gold);
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 900;
             text-align: center;
-            padding: 30px 40px;
+            padding: 40px 60px;
             border-radius: 15px;
             border: 3px solid var(--playoff-gold);
             box-shadow: 0 0 50px rgba(255, 215, 0, 0.8), 0 0 100px rgba(255, 165, 0, 0.5);
             z-index: 9999;
-            letter-spacing: 5px;
+            letter-spacing: 8px;
             text-transform: uppercase;
-            max-width: 90%;
-            width: auto;
-            line-height: 1.4;
-            animation: harshAppear 0.1s ease-out;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        
-        .playoff-line {
-            display: block;
             white-space: nowrap;
+            animation: harshAppear 0.1s ease-out;
         }
         
         @keyframes harshAppear {
@@ -360,18 +350,9 @@
         @media (max-width: 768px) {
             .playoff-message {
                 font-size: 1.8rem;
-                padding: 20px;
-                letter-spacing: 3px;
-            }
-            .playoff-line {
+                padding: 20px 30px;
                 white-space: normal;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .playoff-message {
-                font-size: 1.4rem;
-                padding: 15px;
+                width: 90%;
             }
         }
         
@@ -648,7 +629,7 @@
             return currentDate >= deadlineDate;
         }
         
-        // Функция для показа сообщения "ПЛЕЙ-ОФФ НАЧИНАЕТСЯ С 15 ФЕВРАЛЯ" - 3 СТРОКИ
+        // Функция для показа сообщения "ПЛЕЙ-ОФФ НАЧИНАЕТСЯ С 15 ФЕВРАЛЯ"
         function showPlayoffMessage() {
             // Проверяем, не наступил ли дедлайн
             if (isAfterPlayoffDeadline()) {
@@ -661,14 +642,10 @@
                 return;
             }
             
-            // Создаем элемент сообщения с 3 строками
+            // Создаем элемент сообщения
             const message = document.createElement('div');
             message.className = 'playoff-message';
-            message.innerHTML = `
-                <span class="playoff-line">ПЛЕЙ-ОФФ</span>
-                <span class="playoff-line">НАЧИНАЕТСЯ</span>
-                <span class="playoff-line">С 15 ФЕВРАЛЯ</span>
-            `;
+            message.textContent = 'ПЛЕЙ-ОФФ НАЧИНАЕТСЯ С 15 ФЕВРАЛЯ';
             
             // Добавляем на страницу
             document.body.appendChild(message);
