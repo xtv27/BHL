@@ -21,6 +21,7 @@
             --accent-white: #f0f0f0;
             --accent-red: #e10600;
             --accent-blue: #0066cc;
+            --playoff-gold: #ffd700;
         }
         
         body {
@@ -225,6 +226,7 @@
             padding: 20px;
             transition: transform 0.3s;
             border-left: 4px solid var(--accent-blue);
+            position: relative;
         }
         
         .match-card:hover {
@@ -289,6 +291,69 @@
         .status-finished {
             background-color: #1a1a1a;
             color: #ccc;
+        }
+        
+        /* Стикер ПЛЕЙ-ОФФ */
+        .playoff-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--playoff-gold);
+            color: #000;
+            font-weight: 700;
+            font-size: 0.8rem;
+            padding: 8px 12px;
+            border-radius: 30px;
+            letter-spacing: 2px;
+            box-shadow: 0 0 20px #ffd700, 0 0 40px #ffaa00;
+            animation: glow 1.5s infinite alternate;
+            z-index: 10;
+            border: 1px solid rgba(255, 215, 0, 0.8);
+        }
+        
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 10px #ffd700, 0 0 20px #ffaa00, 0 0 30px #ff8c00;
+            }
+            to {
+                box-shadow: 0 0 20px #ffd700, 0 0 40px #ffaa00, 0 0 60px #ff8c00;
+            }
+        }
+        
+        /* Сообщение ПЛЕЙ-ОФФ НАЧИНАЕТСЯ */
+        .playoff-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.95);
+            color: var(--playoff-gold);
+            font-size: 3.5rem;
+            font-weight: 900;
+            text-align: center;
+            padding: 40px 60px;
+            border-radius: 15px;
+            border: 3px solid var(--playoff-gold);
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.8), 0 0 100px rgba(255, 165, 0, 0.5);
+            z-index: 9999;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            animation: harshAppear 0.1s ease-out;
+        }
+        
+        @keyframes harshAppear {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        @media (max-width: 768px) {
+            .playoff-message {
+                font-size: 1.8rem;
+                padding: 20px 30px;
+                white-space: normal;
+                width: 90%;
+            }
         }
         
         /* Футер */
@@ -412,7 +477,7 @@
                             <div class="team-logo amuris-logo">А</div>
                             <div class="team-info">
                                 <h3>АМУРИС</h3>
-                                <p>BHL</p>
+                                <p>Основан в 2010 году. Базируется в Хабаровске.</p>
                             </div>
                         </div>
                         
@@ -420,7 +485,7 @@
                             <div class="team-logo taifun-logo">Т</div>
                             <div class="team-info">
                                 <h3>ТАЙФУН</h3>
-                                <p>BHL</p>
+                                <p>Основан в 2012 году. Базируется во Владивостоке.</p>
                             </div>
                         </div>
                     </div>
@@ -459,59 +524,64 @@
         // ДАННЫЕ МАТЧЕЙ - ВЫ МОЖЕТЕ ИЗМЕНЯТЬ ЭТИ ЗНАЧЕНИЯ ВРУЧНУЮ В КОДЕ
         const matches = [
             {
-                date: "15.02.2026",
-                time: "14:00",
+                date: "02.05.2026",
+                time: "19:00",
                 timezone: "ПО ХБР",
                 team1: "АМУРИС",
                 team2: "ТАЙФУН",
                 score1: 0,
                 score2: 0,
                 status: "not-started",
-                statusText: "ЕЩЕ НЕ НАЧАЛСЯ"
+                statusText: "ЕЩЕ НЕ НАЧАЛСЯ",
+                isPlayoff: true  // Плей-офф матч
             },
             {
-                date: "21.02.2026",
-                time: "14:00",
+                date: "05.05.2026",
+                time: "17:30",
                 timezone: "ПО ХБР",
                 team1: "ТАЙФУН",
                 team2: "АМУРИС",
                 score1: 0,
                 score2: 0,
                 status: "not-started",
-                statusText: "ЕЩЕ НЕ НАЧАЛСЯ"
+                statusText: "ЕЩЕ НЕ НАЧАЛСЯ",
+                isPlayoff: true  // Плей-офф матч
             },
             {
-                date: "22.02.2026",
-                time: "14:00",
+                date: "09.05.2026",
+                time: "19:00",
                 timezone: "ПО ХБР",
                 team1: "АМУРИС",
                 team2: "ТАЙФУН",
                 score1: 0,
                 score2: 0,
                 status: "not-started",
-                statusText: "ЕЩЕ НЕ НАЧАЛСЯ"
+                statusText: "ЕЩЕ НЕ НАЧАЛСЯ",
+                isPlayoff: true  // Плей-офф матч
             },
             {
-                date: "-",
-                time: "-",
+                date: "12.05.2026",
+                time: "18:00",
                 timezone: "ПО ХБР",
-                team1: "-",
-                team2: "-",
+                team1: "ТАЙФУН",
+                team2: "АМУРИС",
                 score1: 0,
                 score2: 0,
                 status: "not-started",
-                statusText: "ЕЩЕ НЕ НАЧАЛСЯ"
+                statusText: "ЕЩЕ НЕ НАЧАЛСЯ",
+                isPlayoff: false // Обычный матч
             },
             {
-                date: "-",
-                time: "-",
+                date: "15.05.2026",
+                time: "19:30",
                 timezone: "ПО ХБР",
-                team1: "-",
-                team2: "-",
+                team1: "АМУРИС",
+                team2: "ТАЙФУН",
                 score1: 0,
                 score2: 0,
                 status: "not-started",
-                statusText: "ЕЩЕ НЕ НАЧАЛСЯ"
+                statusText: "ЕЩЕ НЕ НАЧАЛСЯ",
+                isPlayoff: false // Обычный матч
             }
         ];
         
@@ -528,7 +598,13 @@
                 const team1Class = match.team1 === 'АМУРИС' ? 'amuris-name' : 'taifun-name';
                 const team2Class = match.team2 === 'АМУРИС' ? 'amuris-name' : 'taifun-name';
                 
-                matchCard.innerHTML = `
+                let playoffBadge = '';
+                // Добавляем светящийся стикер ПЛЕЙ-ОФФ только если это плей-офф матч
+                if (match.isPlayoff) {
+                    playoffBadge = '<div class="playoff-badge"><i class="fas fa-trophy" style="margin-right: 5px;"></i>ПЛЕЙ-ОФФ</div>';
+                }
+                
+                matchCard.innerHTML = playoffBadge + `
                     <div class="match-date">
                         <i class="far fa-calendar"></i> ${match.date} В ${match.time} ${match.timezone}
                     </div>
@@ -544,6 +620,45 @@
                 
                 matchesList.appendChild(matchCard);
             });
+        }
+        
+        // Функция для проверки, наступило ли 15 февраля 2026 10:00 МСК
+        function isAfterPlayoffDeadline() {
+            const deadlineDate = new Date(2026, 1, 15, 10, 0, 0); // 15 февраля 2026, 10:00 МСК
+            const currentDate = new Date();
+            return currentDate >= deadlineDate;
+        }
+        
+        // Функция для показа сообщения "ПЛЕЙ-ОФФ НАЧИНАЕТСЯ С 15 ФЕВРАЛЯ"
+        function showPlayoffMessage() {
+            // Проверяем, не наступил ли дедлайн
+            if (isAfterPlayoffDeadline()) {
+                console.log("Сообщение больше не показывается: прошло 15.02.2026 10:00 МСК");
+                return;
+            }
+            
+            // Проверяем, не показывали ли уже сообщение в этой сессии
+            if (sessionStorage.getItem('playoffMessageShown')) {
+                return;
+            }
+            
+            // Создаем элемент сообщения
+            const message = document.createElement('div');
+            message.className = 'playoff-message';
+            message.textContent = 'ПЛЕЙ-ОФФ НАЧИНАЕТСЯ С 15 ФЕВРАЛЯ';
+            
+            // Добавляем на страницу
+            document.body.appendChild(message);
+            
+            // Отмечаем, что сообщение показано
+            sessionStorage.setItem('playoffMessageShown', 'true');
+            
+            // Удаляем через 3 секунды
+            setTimeout(() => {
+                if (message && message.parentNode) {
+                    message.remove();
+                }
+            }, 3000);
         }
         
         // Функция для эффекта "перерыв на белый"
@@ -563,6 +678,9 @@
             
             // Назначаем обработчик для кнопки "перерыв на белый"
             document.getElementById('whiteBreakBtn').addEventListener('click', activateWhiteBreak);
+            
+            // Показываем сообщение о плей-офф
+            showPlayoffMessage();
         });
     </script>
 </body>
