@@ -460,6 +460,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            flex-wrap: wrap;
         }
         
         .match-teams {
@@ -676,15 +677,15 @@
                             <tbody>
                                 <tr class="amuris-row">
                                     <td class="pos">1.</td>
-                                    <td class="team-name">-</td>
-                                    <td>-</td>
-                                    <td>-</td>
+                                    <td class="team-name">АМУРИС</td>
+                                    <td>18</td>
+                                    <td>3</td>
                                 </tr>
                                 <tr class="taifun-row">
                                     <td class="pos">2.</td>
-                                    <td class="team-name">-</td>
-                                    <td>-</td>
-                                    <td>-</td>
+                                    <td class="team-name">ТАЙФУН</td>
+                                    <td>20</td>
+                                    <td>3</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -724,41 +725,17 @@
     </footer>
 
     <script>
-        // Данные матчей
+        // Данные матчей - СТАТУС НЕ МЕНЯЕТСЯ АВТОМАТИЧЕСКИ
         const matches = [
             {
-                date: "15.02.2026",
-                time: "14:00",
+                date: "DATE",
+                time: "TIME",
                 timezone: "ПО ХБР",
                 team1: "АМУРИС",
                 team2: "ТАЙФУН",
                 score1: 0,
                 score2: 0,
-                status: "-",
-                statusText: "ЕЩЕ НЕ НАЧАЛСЯ",
-                isPlayoff: true
-            },
-            {
-                date: "21.02.2026",
-                time: "14:00",
-                timezone: "ПО ХБР",
-                team1: "ТАЙФУН",
-                team2: "АМУРИС",
-                score1: 0,
-                score2: 0,
-                status: "-",
-                statusText: "ЕЩЕ НЕ НАЧАЛСЯ",
-                isPlayoff: true
-            },
-            {
-                date: "22.02.2026",
-                time: "14:00",
-                timezone: "ПО ХБР",
-                team1: "АМУРИС",
-                team2: "ТАЙФУН",
-                score1: 0,
-                score2: 0,
-                status: "-",
+                status: "not-started",
                 statusText: "ЕЩЕ НЕ НАЧАЛСЯ",
                 isPlayoff: true
             },
@@ -770,7 +747,31 @@
                 team2: "АМУРИС",
                 score1: 0,
                 score2: 0,
-                status: "-",
+                status: "not-started",
+                statusText: "ЕЩЕ НЕ НАЧАЛСЯ",
+                isPlayoff: true
+            },
+            {
+                date: "-",
+                time: "-",
+                timezone: "ПО ХБР",
+                team1: "АМУРИС",
+                team2: "ТАЙФУН",
+                score1: 0,
+                score2: 0,
+                status: "not-started",
+                statusText: "ЕЩЕ НЕ НАЧАЛСЯ",
+                isPlayoff: true
+            },
+            {
+                date: "-",
+                time: "-",
+                timezone: "ПО ХБР",
+                team1: "ТАЙФУН",
+                team2: "АМУРИС",
+                score1: 0,
+                score2: 0,
+                status: "not-started",
                 statusText: "ЕЩЕ НЕ НАЧАЛСЯ",
                 isPlayoff: false
             },
@@ -782,7 +783,7 @@
                 team2: "ТАЙФУН",
                 score1: 0,
                 score2: 0,
-                status: "-",
+                status: "not-started",
                 statusText: "ЕЩЕ НЕ НАЧАЛСЯ",
                 isPlayoff: false
             }
@@ -853,24 +854,10 @@
                 }
             }, 3000);
             
-            // Пример изменения статуса матча через 10 секунд (для демонстрации)
-            setTimeout(() => {
-                matches[0].status = "in-progress";
-                matches[0].statusText = "В ПРОГРЕССЕ";
-                matches[0].score1 = 1;
-                matches[0].score2 = 0;
-                renderMatches();
-            }, 10000);
-            
-            setTimeout(() => {
-                matches[1].status = "finished";
-                matches[1].statusText = "ЗАВЕРШЕН";
-                matches[1].score1 = 3;
-                matches[1].score2 = 2;
-                renderMatches();
-            }, 20000);
+            // ВНИМАНИЕ: АВТОМАТИЧЕСКОЕ ИЗМЕНЕНИЕ СТАТУСОВ МАТЧЕЙ ПОЛНОСТЬЮ УДАЛЕНО
+            // Статусы матчей останутся такими, как заданы в массиве matches выше
+            // Чтобы изменить статус матча, отредактируйте status и statusText в массиве matches
         });
     </script>
 </body>
-
 </html>
