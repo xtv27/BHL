@@ -24,88 +24,140 @@ body {
 .nav {
     position: fixed;
     width: 100%;
-    padding: 15px 40px;
+    padding: 15px 20px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
-    background: rgba(0,0,0,0.4);
+    background: rgba(0,0,0,0.5);
     backdrop-filter: blur(10px);
+}
+
+.menu {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.menu a {
+    color: #aaa;
+    text-decoration: none;
+}
+
+.burger {
+    font-size: 22px;
+    cursor: pointer;
 }
 
 /* ===== HERO ===== */
 .hero {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 80px;
+    min-height: 100vh;
+    padding: 100px 20px 40px;
+    text-align: center;
 }
 
 .hero h1 {
-    font-size: 3.5rem;
-    font-weight: 800;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    color: #aaa;
 }
 
 .btn {
     margin-top: 20px;
-    padding: 12px 25px;
+    padding: 12px 20px;
     border-radius: 30px;
     background: red;
     border: none;
     color: white;
-    cursor: pointer;
+    font-size: 16px;
 }
 
 /* ===== ШАЙБА ===== */
 .puck {
-    width: 200px;
-    height: 200px;
+    width: 120px;
+    height: 120px;
+    margin: 30px auto;
     background: radial-gradient(circle, #333, #000);
     border-radius: 50%;
-    box-shadow: 0 0 50px red;
-    position: relative;
+    box-shadow: 0 0 30px red;
     animation: float 4s ease-in-out infinite;
 }
 
-.puck::after {
-    content: "";
-    position: absolute;
-    width: 300px;
-    height: 5px;
-    background: linear-gradient(90deg, orange, transparent);
-    top: 50%;
-    left: -300px;
-}
-
-/* ===== АНИМАЦИЯ ===== */
 @keyframes float {
     0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
+    50% { transform: translateY(-10px); }
 }
 
 /* ===== РАСПИСАНИЕ ===== */
 .schedule {
-    padding: 80px;
+    padding: 20px;
 }
 
 .match {
-    display: grid;
-    grid-template-columns: 1fr 1fr 2fr 2fr 1fr;
+    background: rgba(255,255,255,0.05);
+    border-radius: 15px;
     padding: 15px;
+    margin-bottom: 12px;
+}
+
+.match-top {
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 10px;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.03);
-    transition: 0.2s;
+    color: #aaa;
 }
 
-.match:hover {
-    background: rgba(255,0,0,0.1);
+.teams {
+    font-weight: 600;
+    font-size: 1.1rem;
 }
 
-.badge {
-    background: rgba(255,0,0,0.2);
-    padding: 5px 10px;
-    border-radius: 20px;
+.score {
+    margin-top: 5px;
+    font-size: 1.4rem;
+    color: red;
+}
+
+/* ===== DESKTOP ===== */
+@media(min-width: 700px){
+    .hero {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-align: left;
+        padding: 0 80px;
+    }
+
+    .puck {
+        width: 200px;
+        height: 200px;
+    }
+
+    .menu {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .burger {
+        display: none;
+    }
+
+    .schedule {
+        padding: 80px;
+    }
+
+    .match {
+        display: grid;
+        grid-template-columns: 1fr 1fr 2fr 2fr 1fr;
+        align-items: center;
+    }
+
+    .match-top {
+        display: contents;
+    }
 }
 </style>
 </head>
@@ -114,7 +166,13 @@ body {
 
 <div class="nav">
     <div>🏒 ВХЛ</div>
-    <div>Главная | Матчи | Команды</div>
+    <div class="burger" onclick="toggleMenu()">☰</div>
+
+    <div class="menu" id="menu">
+        <a href="#">Главная</a>
+        <a href="#schedule">Матчи</a>
+        <a href="#">Команды</a>
+    </div>
 </div>
 
 <section class="hero">
@@ -128,11 +186,9 @@ body {
 </section>
 
 <section class="schedule" id="schedule">
-
-<h2 style="margin-bottom:20px;">РАСПИСАНИЕ</h2>
+<h2 style="margin-bottom:15px;">Расписание</h2>
 
 <div id="matches"></div>
-
 </section>
 
 <script>
@@ -151,11 +207,12 @@ matches.forEach(m => {
     div.className = "match";
 
     div.innerHTML = `
-        <div>${m[0]}</div>
-        <div class="badge">${m[1]}</div>
-        <div>${m[2]}</div>
-        <div>${m[3]}</div>
-        <div>${m[4]}</div>
+        <div class="match-top">
+            <span>${m[0]}</span>
+            <span>${m[1]}</span>
+        </div>
+        <div class="teams">${m[2]} vs ${m[3]}</div>
+        <div class="score">${m[4]}</div>
     `;
 
     container.appendChild(div);
@@ -165,6 +222,11 @@ function scrollToSchedule(){
     document.getElementById("schedule").scrollIntoView({
         behavior: "smooth"
     });
+}
+
+function toggleMenu(){
+    const menu = document.getElementById("menu");
+    menu.style.display = menu.style.display === "flex" ? "none" : "flex";
 }
 </script>
 
