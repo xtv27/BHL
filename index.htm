@@ -1,422 +1,172 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ВХЛ · Лето 2026</title>
-    <style>
-        /* ========== ЧЁРНО-КРАСНЫЙ СТИЛЬ + ЛЕТО ========== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', 'Arial', sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ВХЛ</title>
 
-        body {
-            background-color: #0b0b0b; /* глубокий чёрный */
-            color: #f0f0f0;
-            line-height: 1.5;
-            position: relative;
-            min-height: 100vh;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap" rel="stylesheet">
 
-        /* Летний акцент — солнце / градиент */
-        body::before {
-            content: "";
-            position: fixed;
-            top: -50px;
-            right: -50px;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(255, 60, 60, 0.25) 0%, rgba(255, 60, 60, 0) 70%);
-            border-radius: 50%;
-            z-index: -1;
-            pointer-events: none;
-        }
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
 
-        body::after {
-            content: "";
-            position: fixed;
-            bottom: -30px;
-            left: -30px;
-            width: 250px;
-            height: 250px;
-            background: radial-gradient(circle, rgba(255, 140, 0, 0.15) 0%, rgba(255, 140, 0, 0) 70%);
-            border-radius: 50%;
-            z-index: -1;
-            pointer-events: none;
-        }
+body {
+    background: #050505;
+    color: white;
+}
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 30px 25px;
-            backdrop-filter: blur(2px);
-        }
+/* ===== NAV ===== */
+.nav {
+    position: fixed;
+    width: 100%;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
 
-        /* Шапка */
-        .header {
-            border-left: 6px solid #e11b1b;
-            padding-left: 25px;
-            margin-bottom: 45px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-        }
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
+}
 
-        .header h1 {
-            font-size: 3.2rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            background: linear-gradient(135deg, #ffffff 0%, #ff7b7b 80%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.1;
-        }
+/* ===== HERO ===== */
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 80px;
+}
 
-        .season {
-            background: #1f1f1f;
-            padding: 10px 25px;
-            border-radius: 40px;
-            font-size: 1.5rem;
-            font-weight: 600;
-            border: 2px solid #b30000;
-            box-shadow: 0 0 15px rgba(220, 30, 30, 0.4);
-            color: #ff9999;
-            text-shadow: 0 0 5px red;
-        }
+.hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+}
 
-        .season span {
-            color: white;
-            font-weight: 300;
-            margin-right: 8px;
-        }
+.btn {
+    margin-top: 20px;
+    padding: 12px 25px;
+    border-radius: 30px;
+    background: red;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
 
-        /* плашка ВХЛ */
-        .league-badge {
-            display: inline-block;
-            background: #a30303;
-            padding: 5px 18px;
-            font-weight: 700;
-            font-size: 1.2rem;
-            border-radius: 30px;
-            margin: 10px 0 20px 0;
-            border: 1px solid #ff5e5e;
-            color: white;
-            letter-spacing: 1px;
-        }
+/* ===== ШАЙБА ===== */
+.puck {
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, #333, #000);
+    border-radius: 50%;
+    box-shadow: 0 0 50px red;
+    position: relative;
+    animation: float 4s ease-in-out infinite;
+}
 
-        /* КОМАНДЫ */
-        .teams-section {
-            margin: 50px 0 60px 0;
-        }
+.puck::after {
+    content: "";
+    position: absolute;
+    width: 300px;
+    height: 5px;
+    background: linear-gradient(90deg, orange, transparent);
+    top: 50%;
+    left: -300px;
+}
 
-        .section-title {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #ff3a3a;
-            border-bottom: 3px solid #a00;
-            padding-bottom: 8px;
-            margin-bottom: 30px;
-            display: inline-block;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
+/* ===== АНИМАЦИЯ ===== */
+@keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
 
-        .teams-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: space-around;
-            margin-top: 30px;
-        }
+/* ===== РАСПИСАНИЕ ===== */
+.schedule {
+    padding: 80px;
+}
 
-        .team-card {
-            background: #141414;
-            border: 2px solid #5a0000;
-            border-radius: 30px;
-            padding: 25px 35px;
-            font-size: 2.2rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            color: #fff;
-            box-shadow: 0 10px 0 #4d0000;
-            transition: 0.2s;
-            flex: 1 1 auto;
-            min-width: 180px;
-            text-align: center;
-            letter-spacing: 2px;
-        }
+.match {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr 2fr 1fr;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.03);
+    transition: 0.2s;
+}
 
-        .team-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 0 #6b0000, 0 0 25px #ff5a5a;
-            border-color: #ff3b3b;
-        }
+.match:hover {
+    background: rgba(255,0,0,0.1);
+}
 
-        /* РАСПИСАНИЕ */
-        .schedule-section {
-            background: rgba(10, 10, 10, 0.8);
-            border-radius: 50px 50px 30px 30px;
-            padding: 35px 30px;
-            border: 1px solid #660000;
-            box-shadow: inset 0 0 20px #1a0000, 0 15px 25px black;
-            margin-bottom: 40px;
-        }
-
-        .schedule-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            flex-wrap: wrap;
-            margin-bottom: 30px;
-        }
-
-        .schedule-header h2 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #ff5e5e;
-            border-left: 8px solid #c00;
-            padding-left: 20px;
-        }
-
-        .schedule-note {
-            color: #aaa;
-            font-size: 1.1rem;
-            background: #1e1e1e;
-            padding: 8px 20px;
-            border-radius: 40px;
-            border: 1px dashed #b33;
-        }
-
-        /* таблица матчей */
-        .match-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .match-table th {
-            text-align: left;
-            padding: 15px 10px 10px 15px;
-            font-size: 1.1rem;
-            color: #ffa5a5;
-            border-bottom: 2px solid #b00;
-            font-weight: 500;
-            letter-spacing: 1px;
-        }
-
-        .match-table td {
-            padding: 18px 10px 18px 15px;
-            border-bottom: 1px solid #2e2e2e;
-            font-size: 1.3rem;
-            font-weight: 500;
-        }
-
-        .match-table tr:hover td {
-            background: #1f0f0f;
-            border-bottom-color: #ff3c3c;
-        }
-
-        .match-date {
-            color: #ffc2c2;
-            font-weight: 600;
-            min-width: 110px;
-        }
-
-        .match-time {
-            background: #2b0e0e;
-            padding: 6px 15px;
-            border-radius: 30px;
-            font-weight: 700;
-            color: #ff8a8a;
-            border: 1px solid #a22;
-            display: inline-block;
-            font-size: 1.2rem;
-        }
-
-        .team-badge {
-            font-weight: 700;
-            color: white;
-            background: #252525;
-            padding: 5px 12px;
-            border-radius: 40px;
-            display: inline-block;
-            border: 1px solid #7a1f1f;
-        }
-
-        .team-badge.away {
-            background: #1b0101;
-        }
-
-        .match-score {
-            font-size: 1.8rem;
-            font-weight: 800;
-            font-family: 'Courier New', monospace;
-            background: #1c1c1c;
-            padding: 5px 20px;
-            border-radius: 50px;
-            display: inline-block;
-            min-width: 110px;
-            text-align: center;
-            color: #fdaaaa;
-            border: 2px solid #ac2020;
-            letter-spacing: 2px;
-        }
-
-        .vs-dash {
-            color: #777;
-            font-weight: 300;
-            margin: 0 8px;
-        }
-
-        /* подвал */
-        .footer-note {
-            margin-top: 50px;
-            text-align: right;
-            color: #6f6f6f;
-            border-top: 1px solid #2f2f2f;
-            padding-top: 20px;
-            font-style: italic;
-            font-size: 1.1rem;
-        }
-
-        .footer-note strong {
-            color: #cf5a5a;
-        }
-
-        /* адаптация */
-        @media (max-width: 700px) {
-            .header h1 { font-size: 2.2rem; }
-            .season { font-size: 1.1rem; }
-            .match-table td { font-size: 1rem; padding: 12px 5px; }
-            .match-score { font-size: 1.3rem; padding: 5px 8px; min-width: 80px; }
-        }
-    </style>
+.badge {
+    background: rgba(255,0,0,0.2);
+    padding: 5px 10px;
+    border-radius: 20px;
+}
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <!-- Шапка: ВХЛ + летний сезон -->
-        <div class="header">
-            <h1>ВОСТОЧНАЯ <br>ХОККЕЙНАЯ ЛИГА</h1>
-            <div class="season">
-                <span>🏒</span> HOCKEY SUMMER 2026
-            </div>
-        </div>
 
-        <div class="league-badge">⚡ ВХЛ · ВОСТОК ⚡</div>
+<div class="nav">
+    <div>🏒 ВХЛ</div>
+    <div>Главная | Матчи | Команды</div>
+</div>
 
-        <!-- КОМАНДЫ -->
-        <div class="teams-section">
-            <div class="section-title">▸ КОМАНДЫ СЕЗОНА</div>
-            <div class="teams-grid">
-                <div class="team-card">АМУРИС</div>
-                <div class="team-card">ТАЙФУН</div>
-                <div class="team-card">ГИМАЛАЙ</div>
-            </div>
-        </div>
-
-        <!-- РАСПИСАНИЕ МАТЧЕЙ -->
-        <div class="schedule-section">
-            <div class="schedule-header">
-                <h2>🍹 РАСПИСАНИЕ · ИЮНЬ 2026</h2>
-                <div class="schedule-note">ВХЛ · 8 МАТЧЕЙ</div>
-            </div>
-
-            <table class="match-table" id="matchSchedule">
-                <thead>
-                    <tr>
-                        <th>ДАТА</th>
-                        <th>ВРЕМЯ</th>
-                        <th>ХОЗЯЕВА</th>
-                        <th>ГОСТИ</th>
-                        <th>СЧЁТ</th>
-                    </tr>
-                </thead>
-                <tbody id="scheduleBody">
-                    <!-- строки вставит js -->
-                </tbody>
-            </table>
-            <p style="text-align: center; margin-top: 25px; color: #b5b5b5;">🔥 Жаркие летние матчи · следи за обновлениями 🔥</p>
-        </div>
-
-        <div class="footer-note">
-            <strong>ВХЛ — Восточная хоккейная лига</strong> · солнце, лёд, эмоции
-        </div>
+<section class="hero">
+    <div>
+        <h1>Восточная хоккейная лига</h1>
+        <p>Лето 2026 · матчи и эмоции</p>
+        <button class="btn" onclick="scrollToSchedule()">Смотреть расписание</button>
     </div>
 
-    <script>
-        (function() {
-            // =====================================================
-            //  ТВОИ ДАННЫЕ: ИЮНЬ 2026 (время пока не указано - стоит "19:00")
-            // =====================================================
-            const matches = [
-                // ДАТА          ВРЕМЯ     ХОЗЯЕВА        ГОСТИ           СЧЁТ
-                ["06.06.2026", "-:00", "АМУРИС", "ТАЙФУН", "?"],
-                ["07.06.2026", "-:00", "ТАЙФУН", "АМУРИС", "?"],
-                ["11.06.2026", "-:00", "ТАЙФУН", "ГИМАЛАЙ", "?"],
-                ["13.06.2026", "-:00", "ГИМАЛАЙ", "ТАЙФУН", "?"],
-                ["14.06.2026", "-:00", "ГИМАЛАЙ", "АМУРИС", "?"],
-                ["17.06.2026", "-:00", "ТАЙФУН", "АМУРИС", "?"],
-                ["20.06.2026", "-:00", "ГИМАЛАЙ", "ТАЙФУН", "?"],
-                ["26.06.2026", "-:00", "ТАЙФУН", "ГИМАЛАЙ", "?"],
-            ];
+    <div class="puck"></div>
+</section>
 
-            // ========== НИЖЕ НИЧЕГО НЕ ТРОГАЙ ==========
-            const tbody = document.getElementById('scheduleBody');
-            if (!tbody) return;
+<section class="schedule" id="schedule">
 
-            tbody.innerHTML = '';
+<h2 style="margin-bottom:20px;">РАСПИСАНИЕ</h2>
 
-            matches.forEach(match => {
-                const [date, time, home, away, score] = match;
+<div id="matches"></div>
 
-                const tr = document.createElement('tr');
+</section>
 
-                // Дата
-                const tdDate = document.createElement('td');
-                tdDate.className = 'match-date';
-                tdDate.textContent = date;
-                tr.appendChild(tdDate);
+<script>
+const matches = [
+["06.06", "-:00", "АМУРИС", "ТАЙФУН", "?"],
+["07.06", "-:00", "ТАЙФУН", "АМУРИС", "?"],
+["11.06", "-:00", "ТАЙФУН", "ГИМАЛАЙ", "?"],
+["13.06", "-:00", "ГИМАЛАЙ", "ТАЙФУН", "?"],
+["14.06", "-:00", "ГИМАЛАЙ", "АМУРИС", "?"],
+];
 
-                // Время
-                const tdTime = document.createElement('td');
-                const timeSpan = document.createElement('span');
-                timeSpan.className = 'match-time';
-                timeSpan.textContent = time;
-                tdTime.appendChild(timeSpan);
-                tr.appendChild(tdTime);
+const container = document.getElementById("matches");
 
-                // Хозяева
-                const tdHome = document.createElement('td');
-                const homeSpan = document.createElement('span');
-                homeSpan.className = 'team-badge';
-                homeSpan.textContent = home;
-                tdHome.appendChild(homeSpan);
-                tr.appendChild(tdHome);
+matches.forEach(m => {
+    const div = document.createElement("div");
+    div.className = "match";
 
-                // Гости
-                const tdAway = document.createElement('td');
-                const awaySpan = document.createElement('span');
-                awaySpan.className = 'team-badge away';
-                awaySpan.textContent = away;
-                tdAway.appendChild(awaySpan);
-                tr.appendChild(tdAway);
+    div.innerHTML = `
+        <div>${m[0]}</div>
+        <div class="badge">${m[1]}</div>
+        <div>${m[2]}</div>
+        <div>${m[3]}</div>
+        <div>${m[4]}</div>
+    `;
 
-                // Счёт
-                const tdScore = document.createElement('td');
-                const scoreSpan = document.createElement('span');
-                scoreSpan.className = 'match-score';
-                scoreSpan.textContent = score;
-                tdScore.appendChild(scoreSpan);
-                tr.appendChild(tdScore);
+    container.appendChild(div);
+});
 
-                tbody.appendChild(tr);
-            });
-        })();
-    </script>
+function scrollToSchedule(){
+    document.getElementById("schedule").scrollIntoView({
+        behavior: "smooth"
+    });
+}
+</script>
+
 </body>
 </html>
